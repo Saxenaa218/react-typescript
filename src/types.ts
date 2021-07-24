@@ -5,7 +5,7 @@ export interface EachTodo {
 }
 
 export interface Action {
-    type: string,
+    type: 'add' | 'remove' | 'update',
     payload: EachTodo
 }
 
