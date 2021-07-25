@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/react-typescript/static/css/main.6a749b4c.chunk.css",
+    "main.js": "/react-typescript/static/js/main.bf81d6cb.chunk.js",
+    "main.js.map": "/react-typescript/static/js/main.bf81d6cb.chunk.js.map",
+    "runtime-main.js": "/react-typescript/static/js/runtime-main.de4e8a38.js",
+    "runtime-main.js.map": "/react-typescript/static/js/runtime-main.de4e8a38.js.map",
+    "static/js/2.8c4e2781.chunk.js": "/react-typescript/static/js/2.8c4e2781.chunk.js",
+    "static/js/2.8c4e2781.chunk.js.map": "/react-typescript/static/js/2.8c4e2781.chunk.js.map",
+    "static/js/3.287299cb.chunk.js": "/react-typescript/static/js/3.287299cb.chunk.js",
+    "static/js/3.287299cb.chunk.js.map": "/react-typescript/static/js/3.287299cb.chunk.js.map",
+    "index.html": "/react-typescript/index.html",
+    "static/css/main.6a749b4c.chunk.css.map": "/react-typescript/static/css/main.6a749b4c.chunk.css.map",
+    "static/js/2.8c4e2781.chunk.js.LICENSE.txt": "/react-typescript/static/js/2.8c4e2781.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.de4e8a38.js",
+    "static/js/2.8c4e2781.chunk.js",
+    "static/css/main.6a749b4c.chunk.css",
+    "static/js/main.bf81d6cb.chunk.js"
+  ]
+}
