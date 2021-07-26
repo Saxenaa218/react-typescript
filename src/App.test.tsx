@@ -37,37 +37,37 @@ describe('testing CRUD', () => {
     expect(todoList.children.length).toBeGreaterThanOrEqual(0);  
   })
   
-  test('adding todo', async() => {
-    render(<App/>)
-    await waitForElementToBeRemoved(() => screen.getByText(/loading.../i));
+  // test('adding todo', async() => {
+  //   render(<App/>)
+  //   await waitForElementToBeRemoved(() => screen.getByText(/loading.../i));
 
-    const input = screen.getByTestId("input");
-    const todoList = screen.getByTestId('elements');
-    const prevTodoLength = todoList.children.length;
+  //   const input = screen.getByTestId("input");
+  //   const todoList = screen.getByTestId('elements');
+  //   const prevTodoLength = todoList.children.length;
 
-    fireEvent.change(input, { target: { value: 'text for test' } });
-    fireEvent.click(screen.getByTestId('add-btn'));
+  //   fireEvent.change(input, { target: { value: 'text for test' } });
+  //   fireEvent.click(screen.getByTestId('add-btn'));
 
-    await waitForDomChange()
+  //   await waitForDomChange()
 
-    const now = screen.getByTestId('elements').children.length
-    expect(screen.getByTestId('input')).toHaveValue('')
-    expect(now).toEqual(prevTodoLength+1);
-  })
+  //   const now = screen.getByTestId('elements').children.length
+  //   expect(screen.getByTestId('input')).toHaveValue('')
+  //   expect(now).toEqual(prevTodoLength+1);
+  // })
 
-  test('deleting todo', async() => {
-    render(<App/>)
-    await waitForElementToBeRemoved(() => screen.getByText(/loading.../i));
+  // test('deleting todo', async() => {
+  //   render(<App/>)
+  //   await waitForElementToBeRemoved(() => screen.getByText(/loading.../i));
 
-    const deleteBtn = screen.getByTestId('delete-'+'0');
-    const todoList = screen.getByTestId('elements');
-    const prevTodoLength = todoList.children.length;
+  //   const deleteBtn = screen.getByTestId('delete-'+'0');
+  //   const todoList = screen.getByTestId('elements');
+  //   const prevTodoLength = todoList.children.length;
 
-    fireEvent.click(deleteBtn);
+  //   fireEvent.click(deleteBtn);
 
-    await waitForDomChange()
+  //   await waitForDomChange()
 
-    const now = screen.getByTestId('elements').children.length
-    expect(now).toEqual(prevTodoLength-1);
-  })
+  //   const now = screen.getByTestId('elements').children.length
+  //   expect(now).toEqual(prevTodoLength-1);
+  // })
 })
