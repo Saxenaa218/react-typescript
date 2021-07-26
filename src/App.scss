@@ -13,7 +13,7 @@
   .todo-input {
     padding: 5px 8px;
     font-size: 14px;
-    width: 40%;
+    width: 48%;
   }
   button {
     padding: 6px 10px;
@@ -31,8 +31,11 @@
   .todo-elements {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 10px 0;
+    // align-items: ini;
+    margin: 10px 23%;
+    border: 1px solid lightgrey;
+    padding: 1px 3px;
+
     .todo-element {
       margin: 3px 0px;
       border: 1px solid lightgrey;
