@@ -10,14 +10,20 @@ const baseUrl = 'http://localhost:3005/';
 const App: React.FC = () => {
   
   const [val, setVal] = useState('');
+  const [loading, setLoading] = useState(false);
   const [todos, setTodos] = useReducer(todoReducer, []);
   
   const fetchTodos = () => {
+    setLoading(true)
     axios.get(baseUrl+'get-todos')
       .then((json: any) => {
         if (!json.data.data.error) json.data.data.forEach((each: EachTodo) => setTodos({ type: 'add', payload: each }))
+        setLoading(false)
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
   }
 
   const addTodos = (data: any) => {
@@ -91,21 +97,23 @@ const App: React.FC = () => {
       <div className="todo-input-section">
         <input 
           className="todo-input" 
+          data-testid="input"
           value={val} 
           placeholder="please add the task here" 
           onChange={e => setVal(e.target.value)} 
           onKeyPress={e => e.key === 'Enter' && handleAdd()}
         />
-        <button onClick={handleAdd}>Add</button>
+        <button onClick={handleAdd} data-testid="add-btn">Add</button>
       </div>
-      <div className="todo-elements">
-        {todos.map((each: EachTodo) => 
+      <div className="todo-elements" data-testid="elements">
+        {loading ? 'loading...' : todos.map((each: EachTodo, index: number) => 
           <div className="todo-element" key={each._id}>
             <input 
               defaultChecked={each.isDone}
               type="checkbox" 
               className="checkbox"
               onChange={(e: any) => updateTodos('isDone', e.target.checked, each)}
+              data-testid="checkbox"
               // onClick={() => setTodos({ type: 'update', payload: { ...each } })}
             />
             <span
@@ -114,7 +122,7 @@ const App: React.FC = () => {
             >
               {each.value}
             </span>
-            <span className="delete-todo" onClick={() => deteleTodos(each)}>
+            <span className="delete-todo" data-testid={`delete-${index}`} onClick={() => deteleTodos(each)}>
               <Icon path={mdiCloseCircle} size="1.3rem" />
             </span>
           </div>
