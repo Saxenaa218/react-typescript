@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import App from './App';
 
-describe('testing elements', () => {
+describe('testing elements (checking they are rendered properly or not)', () => {
   test('heading is rendered', () => {
     render(<App/>)
     expect(screen.getByText(/Todos/i)).toBeInTheDocument() 
@@ -16,9 +16,13 @@ describe('testing elements', () => {
     render(<App/>)
     expect(screen.getByTestId('add-btn')).toBeInTheDocument() 
   })
-  test('rendering input', () => {
+  test('input field rendered', () => {
     render(<App/>)
     expect(screen.getByTestId('input')).toBeInTheDocument() 
+  })
+  test('todo block rendered', () => {
+    render(<App/>)
+    expect(screen.getByTestId('elements')).toBeInTheDocument() 
   })
 })
 

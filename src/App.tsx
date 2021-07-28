@@ -1,11 +1,11 @@
-import { useEffect, useReducer, useState } from 'react';
-import { Action, State, EachTodo } from './types';
+import { useEffect, useReducer, useState, useCallback } from 'react';
 import axios from 'axios';
-import { Icon } from '@mdi/react'
-import { mdiCloseCircle } from '@mdi/js'
+import { EachTodo } from './utils/types';
+import TodoList from './components/TodoList'
+import TodoInputSection from './components/TodoInputSection'
+import { todoReducer } from './utils/reducers'
+import { GET_TODOS, ADD_TODOS, UPDATE_TODOS, DELETE_TODOS } from './utils/constants'
 import './App.scss';
-
-const baseUrl = 'http://localhost:3005/';
 
 const App: React.FC = () => {
   
@@ -13,21 +13,21 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [todos, setTodos] = useReducer(todoReducer, []);
   
-  const fetchTodos = () => {
+  const fetchTodos = (): void => {
     setLoading(true)
-    axios.get(baseUrl+'get-todos')
+    axios.get(GET_TODOS)
       .then((json: any) => {
         if (!json.data.data.error) json.data.data.forEach((each: EachTodo) => setTodos({ type: 'add', payload: each }))
         setLoading(false)
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         setLoading(false)
       })
   }
 
-  const addTodos = (data: any) => {
-    axios.post(baseUrl+'add-todos', { ...data })
+  const addTodos = (data: any): void => {
+    axios.post(ADD_TODOS, { ...data })
       .then(json => {
         const { isDone, value, _id } = json.data.data
         setTodos({ type: 'add', payload: { isDone, value, _id } })
@@ -38,96 +38,34 @@ const App: React.FC = () => {
       })
   }
 
-  const updateTodos = (fieldChanged: string, updatedValue: boolean, object: EachTodo) => {
+  const updateTodos = (fieldChanged: string, updatedValue: boolean, object: EachTodo): void => {
     const updateObject: any = { ...object };
     updateObject[fieldChanged] = updatedValue;
-    axios.put(baseUrl+'update-todos', { ...updateObject })
-      .then((json: Object) => setTodos({ type: 'update', payload: updateObject }))
-      .catch(error => console.log(error))
+    axios.put(UPDATE_TODOS, { ...updateObject })
+      .then((json: any) => setTodos({ type: 'update', payload: updateObject }))
+      .catch(error => console.error(error))
   }
 
-  const deteleTodos = (obj: EachTodo) => {
-    axios.delete(baseUrl+'delete-todos', { data: {_id: obj._id} })
-    .then((json: any) => {
-      setTodos({ type: 'delete', payload: obj })
-    })
-    .catch(error => console.log(error))
+  const deteleTodos = (obj: EachTodo): void => {
+    axios.delete(DELETE_TODOS, { data: {_id: obj._id} })
+    .then((json: any) => setTodos({ type: 'delete', payload: obj }))
+    .catch(error => console.error(error))
   }
   
-  useEffect(() => {
+  useEffect((): void => {
     fetchTodos()
   }, [])
 
-  function todoReducer(state: State, action: Action) {
-    switch(action.type) {
-      // case 'setAll':
-      //   return [ ...action.payload ];
-      case 'add':
-        return [ ...state, action.payload ];
-      case 'update':
-        const tempState = [ ...state ]
-        return tempState.map((itm: EachTodo) => {
-          const tempItm: EachTodo = {...itm}
-          if (itm._id === action.payload._id) {
-            tempItm.isDone = itm.isDone ? false : true;
-            return tempItm
-          }
-          else return tempItm
-        })
-      case 'delete':
-        return [ ...state.filter((itm: EachTodo) => itm._id !== action.payload._id) ]
-      default:
-        return [ ...state ]
-    }
-  }
-
-  const handleAdd = () => {
+  const handleAdd = (): void => {
     if (val === '') return;
-    // const id: string = uuid();
     addTodos({ value: val, isDone: false })
-    // setTodos({ type: 'add', payload: { id: id, value: val, isDone: false } })
-    // setVal('')
   }
 
   return (
     <div className="App">
-      <header className="App-header">
-        Todos
-      </header>
-      <div className="todo-input-section">
-        <input 
-          className="todo-input" 
-          data-testid="input"
-          value={val} 
-          placeholder="please add the task here" 
-          onChange={e => setVal(e.target.value)} 
-          onKeyPress={e => e.key === 'Enter' && handleAdd()}
-        />
-        <button onClick={handleAdd} data-testid="add-btn">Add</button>
-      </div>
-      <div className="todo-elements" data-testid="elements">
-        {loading ? 'loading...' : todos.map((each: EachTodo, index: number) => 
-          <div className="todo-element" key={each._id}>
-            <input 
-              defaultChecked={each.isDone}
-              type="checkbox" 
-              className="checkbox"
-              onChange={(e: any) => updateTodos('isDone', e.target.checked, each)}
-              data-testid="checkbox"
-              // onClick={() => setTodos({ type: 'update', payload: { ...each } })}
-            />
-            <span
-              key={each._id} 
-              style={ each.isDone ? { textDecoration: 'line-through', color: 'lightgray' } : {} }
-            >
-              {each.value}
-            </span>
-            <span className="delete-todo" data-testid={`delete-${index}`} onClick={() => deteleTodos(each)}>
-              <Icon path={mdiCloseCircle} size="1.3rem" />
-            </span>
-          </div>
-        )}
-      </div>
+      <header className="App-header">Todos</header>
+      <TodoInputSection val={val} setVal={setVal} handleAdd={useCallback(handleAdd, [val])} />
+      <TodoList loading={loading} todos={todos} updateTodos={useCallback(updateTodos, [])} deleteTodos={useCallback(deteleTodos, [])} />
     </div>
   );
 }
