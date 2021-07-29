@@ -1,11 +1,15 @@
 import { useEffect, useReducer, useState, useCallback } from 'react';
 import axios from 'axios';
+import ReactGA from 'react-ga';
 import { EachTodo } from './utils/types';
 import TodoList from './components/TodoList'
 import TodoInputSection from './components/TodoInputSection'
 import { todoReducer } from './utils/reducers'
-import { GET_TODOS, ADD_TODOS, UPDATE_TODOS, DELETE_TODOS } from './utils/constants'
+import { GET_TODOS, ADD_TODOS, UPDATE_TODOS, DELETE_TODOS, GOOGLE_TRACKING_ID } from './utils/constants'
 import './App.scss';
+
+ReactGA.initialize(GOOGLE_TRACKING_ID);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const App: React.FC = () => {
   
